@@ -35,6 +35,21 @@ app.post("/repositories", (request, response) => {
 
 app.put("/repositories/:id", (request, response) => {
   // TODO
+  const { id } = request.params;
+  const { title, url, techs } = request.body;
+
+  const findRepositoryIndex = repositories.findIndex( 
+    repository => repository.id == id );
+
+  if( findRepositoryIndex >= 0 ) {
+    const { likes } = repositories[findRepositoryIndex];
+    repositories[findRepositoryIndex] = { id, title, url, techs, likes };
+  }
+  else {
+    return response.status( 400 ).json( {error: 'Repositório inexistente!'} );
+  }
+
+  return response.json(repositories[findRepositoryIndex]);
 });
 
 app.delete("/repositories/:id", (request, response) => {
