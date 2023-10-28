@@ -71,6 +71,19 @@ app.delete("/repositories/:id", (request, response) => {
 
 app.post("/repositories/:id/like", (request, response) => {
   //TODO
+  const { id } = request.params;
+
+  const findRepositoryIndex = repositories.findIndex( 
+    repository => repository.id == id );
+
+  if( findRepositoryIndex >= 0 ) {
+    repositories[findRepositoryIndex].likes += 1;
+  }
+  else {
+    return response.status( 400 ).json( {error: 'Repositório inexistente!'} );
+  }
+
+  return response.json(repositories[findRepositoryIndex]);
 });
 
 module.exports = app;
